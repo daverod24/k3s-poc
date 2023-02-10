@@ -1,6 +1,6 @@
 ---
 roles:
-  - name: geerlingguy.swap
+  - name: slchniguir.rancher
 
 collections:
   - name: kubernetes.core

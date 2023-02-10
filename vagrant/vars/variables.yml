@@ -1,0 +1,8 @@
+k3s_version: v1.24.1+k3s1
+helm_chart_version: 3.2.0
+use_docker: no
+generate_key: yes
+certificate_file_name: 'nc.crt'
+private_key_file_name: 'nc-privatekey.pem'
+sqlite_db: no
+

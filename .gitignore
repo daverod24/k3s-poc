@@ -3,6 +3,7 @@
 
 ### Ansible ###
 *.retry
+*/roles/**
 
 ### Helm ###
 # Chart dependencies

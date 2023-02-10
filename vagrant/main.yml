@@ -1,0 +1,10 @@
+cert_manager_version: '1.0.4'
+rancher_version: '2.5.8'
+rancher_dns_name: rancher.company.com
+k3s_kube_config_path: "~{{ ansible_user }}/.kube/config"
+rancher_options:
+  letsencrypt_email: technique@wisecorp.tn
+  ingress_tls_source: letsEncrypt # possible values: rancher, letsEncrypt, secret
+  noProxy: 127.0.0.0/8\,.svc\,.cluster.local # possible values: external, ingress
+  replicas: 2
+  tls: ingress # possible values: external, ingress

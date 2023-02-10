@@ -1,0 +1,99 @@
+- hosts: all
+  become: yes
+  strategy: free
+  environment:
+    INSTALL_K3S_VERSION: "{{ k3s_version }}"
+  vars_files:
+    - main.yml
+    - vars/variables.yml
+
+  pre_tasks:
+    - name: Install necessary packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common 
+        - gnupg2
+        - net-tools
+        - python3-minimal 
+        - build-essential 
+        - python3-pip
+    - name: General Python dependencies
+      pip:
+        name:  
+        - ansible
+        - setuptools
+        - docker-py
+        # k8s_module 
+        - openshift >= 0.6
+        - PyYAML >= 3.11
+# - name: run ansible galaxy
+#   local_action: command ansible-galaxy install -r requirements.yml --ignore-errors
+
+
+  tasks:
+    - name: Print a message
+      ansible.builtin.debug:
+        msg: "this task runs before the example role"
+    - name: Create Ansible directory structure
+      file:
+        path: /vagrant/files/generated
+        state: directory
+        mode: '0755'
+    - name: Installing fail2ban
+      apt:
+        name: fail2ban
+        update_cache: yes
+        state: latest
+    - name: Copy fail2ban config
+      copy:
+        src: ./files/jail.local
+        dest: /etc/fail2ban/jail.local
+    - name: Enable fail2ban
+      systemd:
+        name: fail2ban
+        enabled: yes
+        state: started
+    - name: Install Docker
+      shell: curl https://releases.rancher.com/install-docker/19.03.sh | sh
+      when: use_docker
+    - name: Install K3s for Docker
+      shell:  curl -sfL https://get.k3s.io | sh -s - --docker
+      when: use_docker
+    - name: Install K3s with containerd
+      shell: curl -sfL https://get.k3s.io | sh -
+      when: not use_docker
+    - name: Get Helm Installer
+      get_url: 
+        url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        dest: ~/get-helm-3
+        mode: 330
+    - name: Install Helm
+      shell: ~/get-helm-3
+    # - name: Add NextCloud helm repo
+    #   kubernetes.core.helm_repository:
+    #     name: nextcloud
+    #     repo_url: https://nextcloud.github.io/helm/
+
+  # roles:
+  #   - role: "slchniguir.rancher"
+
+
+
+
+# - import_playbook: "../../ansible/rancher.yml"
+
+
+# - import_playbook: playbooks/helm-playbook.yml
+#   when: install_helm is defined and install_helm
+
+# Disabled until rancher ui works on k3s 
+# Requires install_rancher: true in vars.yml if activated later
+#- import_playbook: playbooks/rancher-playbook.yml
+#  when: install_rancher is defined and install_rancher
