@@ -1,0 +1,93 @@
+---
+- name: Terraform Deployment
+  hosts: all
+  become: yes
+  gather_facts: true
+  vars:
+    project_dir: "/vagrant/terraform/"
+    state: present
+    backend_config:
+      region: "us-west-2"
+      bucket: "terraform-state-bucket"
+      key: "terraform.tfstate"
+    variables:
+      vm_name: "test-vm"
+      vm_vcpus: 2
+      vm_mem: 2048
+      vm_additional_disks:
+        - label: "Third Disk"
+          size: 40
+          thin_provisioned: true
+          unit_number: 2
+        - label: "Fourth Disk"
+          size: 22
+          thin_provisioned: true
+          unit_number: 3
+
+  pre_tasks:
+    - name: Install necessary packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+      vars:
+        packages:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common 
+        - gnupg2
+        - net-tools
+        - python3-minimal 
+        - build-essential 
+        - python3-pip
+        - vim
+        - unzip
+        - wget
+        - unrar
+        - git
+
+
+  roles:
+    - role: ansible-role-terraform
+      vars:
+        terraform_version: 1.3.8
+        terraform_pkg_url: "https://releases.hashicorp.com/terraform/{{ terraform_version_to_install }}/terraform_{{ terraform_version_to_install }}_{{ os_type }}_{{ base_arch[ansible_architecture] | default('amd64') }}.zip"
+        terraform_default_path: /usr/local/bin/
+        os_type: linux
+        base_arch:
+          i386: '386'
+          x86_64: 'amd64'
+          amd64: 'amd64'
+          aarch64: 'arm64'
+          armv7l: 'arm'
+          armv6l: 'arm'
+        base_os:
+          Linux: 'Linux-Unix'
+          FreeBSD: 'Linux-Unix'
+          OpenBSD: 'Linux-Unix'
+          Solaris: 'Linux-Unix'
+          Darwin: 'Linux-Unix'
+          Win32NT: 'Windows'
+  tasks:
+    # - name: Executing ansible-pull on servers
+    #   command: ansible-pull -U https://gitlab.com/hemanth22/ansible-pull-terraform.git
+
+    # - name: Basic deploy of a service
+    #   community.general.terraform:
+    #     project_path: '{{ project_dir }}'
+    #     state: present
+
+    - name: Define the backend configuration at init
+      community.general.terraform:
+        project_path: '{{ project_dir }}'
+        state: "{{ state }}"
+        force_init: true
+        backend_config:
+          region: "eu-west-1"
+          bucket: "some-bucket"
+          key: "random.tfstate"
+
+
+
+

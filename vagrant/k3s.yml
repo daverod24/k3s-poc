@@ -27,7 +27,9 @@
     - name: General Python dependencies
       pip:
         name:  
-        - ansible
+        - jinja2==3.0.0
+        - ansible-base 
+        - ansible-core
         - setuptools
         - docker-py
         # k8s_module 
@@ -69,20 +71,20 @@
     - name: Install K3s with containerd
       shell: curl -sfL https://get.k3s.io | sh -
       when: not use_docker
-    - name: Get Helm Installer
-      get_url: 
-        url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-        dest: ~/get-helm-3
-        mode: 330
-    - name: Install Helm
-      shell: ~/get-helm-3
+    # - name: Get Helm Installer
+    #   get_url: 
+    #     url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    #     dest: ~/get-helm-3
+    #     mode: 330
+    # - name: Install Helm
+    #   shell: ~/get-helm-3
     # - name: Add NextCloud helm repo
     #   kubernetes.core.helm_repository:
     #     name: nextcloud
     #     repo_url: https://nextcloud.github.io/helm/
 
-  # roles:
-  #   - role: "slchniguir.rancher"
+  roles:
+    - role: "slchniguir.rancher"
 
 
 
