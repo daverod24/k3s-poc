@@ -1,6 +1,6 @@
 ---
 - name: Terraform Deployment
-  hosts: all
+  hosts: all, localhost
   become: yes
   gather_facts: true
   vars:
@@ -69,7 +69,7 @@
           Solaris: 'Linux-Unix'
           Darwin: 'Linux-Unix'
           Win32NT: 'Windows'
-  tasks:
+  # tasks:
     # - name: Executing ansible-pull on servers
     #   command: ansible-pull -U https://gitlab.com/hemanth22/ansible-pull-terraform.git
 
@@ -78,15 +78,15 @@
     #     project_path: '{{ project_dir }}'
     #     state: present
 
-    - name: Define the backend configuration at init
-      community.general.terraform:
-        project_path: '{{ project_dir }}'
-        state: "{{ state }}"
-        force_init: true
-        backend_config:
-          region: "eu-west-1"
-          bucket: "some-bucket"
-          key: "random.tfstate"
+    # - name: Define the backend configuration at init
+    #   community.general.terraform:
+    #     project_path: '{{ project_dir }}'
+    #     state: "{{ state }}"
+    #     force_init: true
+    #     backend_config:
+    #       region: "eu-west-1"
+    #       bucket: "some-bucket"
+    #       key: "random.tfstate"
 
 
 

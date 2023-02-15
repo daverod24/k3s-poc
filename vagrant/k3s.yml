@@ -30,11 +30,11 @@
         - jinja2==3.0.0
         - ansible-base 
         - ansible-core
-        - setuptools
-        - docker-py
-        # k8s_module 
-        - openshift >= 0.6
-        - PyYAML >= 3.11
+        # - setuptools
+        # - docker-py
+        # # k8s_module 
+        # - openshift >= 0.6
+        # - PyYAML >= 3.11
 # - name: run ansible galaxy
 #   local_action: command ansible-galaxy install -r requirements.yml --ignore-errors
 
@@ -83,8 +83,8 @@
     #     name: nextcloud
     #     repo_url: https://nextcloud.github.io/helm/
 
-  roles:
-    - role: "slchniguir.rancher"
+  # roles:
+  #   - role: "slchniguir.rancher"
 
 
 
