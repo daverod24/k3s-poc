@@ -1,3 +1,16 @@
+terraform {
+  required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.11.0"
+    }
+    helm = {
+      source = "hashicorp/helm"
+      version = "2.9.0"
+    }
+  }
+}
+
 provider "kubernetes" {
   # Configuración del proveedor de Kubernetes
   config_path    = "/etc/rancher/k3s/k3s.yaml"
@@ -5,20 +18,35 @@ provider "kubernetes" {
   # change permission this file to access /etc/rancher/k3s/k3s.yaml with chown
 }
 
+provider "helm" {
+  kubernetes {
+    config_path = "/etc/rancher/k3s/k3s.yaml"
+  }
+
+  # # localhost registry with password protection
+  # registry {
+  #   url = "oci://localhost:5000"
+  #   username = "username"
+  #   password = "password"
+  # }
+
+  # # private registry
+  # registry {
+  #   url = "oci://private.registry"
+  #   username = "username"
+  #   password = "password"
+  # }
+}
+
+
+
 resource "kubernetes_namespace" "testing" {
   metadata {
     name = "testing"
   }
 }
 
-terraform {
-  required_providers {
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = ">= 2.11.0"
-    }
-  }
-}
+
 
 
 

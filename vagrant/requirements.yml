@@ -3,6 +3,6 @@ roles:
   - name: slchniguir.rancher
 
 collections:
-  - name: community.General
+  - name: community.general
   - name: kubernetes.core
     version: 2.3.1

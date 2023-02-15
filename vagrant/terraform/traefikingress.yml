@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: my-ingress
+  labels:
+    app: my-app
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`my-host.com`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: my-service
+      port: 80
