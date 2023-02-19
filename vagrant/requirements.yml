@@ -1,6 +1,6 @@
 ---
-roles:
-  - name: slchniguir.rancher
+# roles:
+#   - name: slchniguir.rancher
 
 collections:
   - name: community.general

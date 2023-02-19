@@ -80,14 +80,14 @@
           Solaris: 'Linux-Unix'
           Darwin: 'Linux-Unix'
           Win32NT: 'Windows'
-  tasks:
+  # tasks:
     # - name: Executing ansible-pull on servers
     #   command: ansible-pull -U https://gitlab.com/hemanth22/ansible-pull-terraform.git
 
-    - name: Basic deploy of a service
-      community.general.terraform:
-        project_path: '{{ project_dir }}'
-        state: present
+    # - name: Basic deploy of a service
+    #   community.general.terraform:
+    #     project_path: '{{ project_dir }}'
+    #     state: present
 
     # - name: Define the backend configuration at init
     #   community.general.terraform:

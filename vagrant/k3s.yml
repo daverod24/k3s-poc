@@ -72,10 +72,10 @@
       shell: curl -sfL https://get.k3s.io | sh -
       when: not use_docker
     # - name: Get Helm Installer
-    #   get_url: 
+    #   ansible.builtin.get_url: 
     #     url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     #     dest: ~/get-helm-3
-    #     mode: 330
+    #     mode: "0770"
     # - name: Install Helm
     #   shell: ~/get-helm-3
     # - name: Add NextCloud helm repo
